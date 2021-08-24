@@ -31,7 +31,7 @@ def version_token():
 RDF_FILE_LOCAL = '../LOSH/OKH-LOSH.ttl'
 RDF_FILE_REMOTE = 'https://raw.githubusercontent.com/OPEN-NEXT/OKH-LOSH/master/OKH-LOSH.ttl'
 RDF_FILE = RDF_FILE_LOCAL if os.path.exists(RDF_FILE_LOCAL) else RDF_FILE_REMOTE
-BASE_URI = 'https://github.com/OPEN-NEXT/OKH-LOSH/raw/master/OKH-LOSH.ttl#'
+BASE_URI = 'https://github.com/OPEN-NEXT/OKH-LOSH/raw/master/OKH-LOSH.ttl'
 RDF_TO_WB_LINK_FILE = 'ont2wb_links.ttl'
 
 
