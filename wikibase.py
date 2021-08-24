@@ -26,7 +26,7 @@ except ImportError:
     from httplib import HTTPConnection
 
 API_URL_MEDIA_WIKI = 'https://www.wikidata.org/w/api.php'
-API_URL_OHO = 'https://wikibase.oho.wiki/api.php'
+API_URL_OHO = 'http://losh.ose-germany.de/api.php'
 
 def enable_debug():
     '''

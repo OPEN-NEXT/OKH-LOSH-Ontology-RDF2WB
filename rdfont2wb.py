@@ -16,6 +16,7 @@ from wikibase import WBSession, API_URL_OHO, enable_debug
 OBO = rdflib.Namespace('http://purl.obolibrary.org/obo/')
 SCHEMA = rdflib.Namespace('http://schema.org/')
 SPDX = rdflib.Namespace('http://spdx.org/rdf/terms#')
+EPO = rdflib.Namespace('http://data.epo.org/linked-data/def/patent/')
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -27,10 +28,10 @@ def version_token():
     '''
     #pass
 
-RDF_FILE_LOCAL = '../LOSH/osh-metadata.ttl'
-RDF_FILE_REMOTE = 'https://raw.githubusercontent.com/OPEN-NEXT/LOSH/master/osh-metadata.ttl'
+RDF_FILE_LOCAL = '../LOSH/OKH-LOSH.ttl'
+RDF_FILE_REMOTE = 'https://raw.githubusercontent.com/OPEN-NEXT/OKH-LOSH/master/OKH-LOSH.ttl'
 RDF_FILE = RDF_FILE_LOCAL if os.path.exists(RDF_FILE_LOCAL) else RDF_FILE_REMOTE
-BASE_URI = 'http://purl.org/oseg/ontologies/osh-metadata/0.1/base'
+BASE_URI = 'https://github.com/OPEN-NEXT/OKH-LOSH/raw/master/OKH-LOSH.ttl#'
 RDF_TO_WB_LINK_FILE = 'ont2wb_links.ttl'
 
 
@@ -46,7 +47,7 @@ def get_non_claim_preds():
             OWL.cardinality, OWL.maxCardinality, OWL.minCardinality]
             #RDFS.subPropertyOf, RDFS.subClassOf]
 
-WD_PRED_IDS = ['P279', 'P1647', 'P305', 'P348', 'P144', 'P3931', 'P2479', 'P548', 'P4765', 'P527', 'P1324', 'P8203', 'P7535', 'P1114', 'P2699']
+WD_PRED_IDS = ['P279', 'P1647', 'P305', 'P348', 'P144', 'P3931', 'P2479', 'P548', 'P4765', 'P527', 'P1324', 'P8203', 'P7535', 'P1114', 'P2699', 'P2479', 'P5778']
 
 class RdfOntology2WikiBaseConverter:
 
@@ -90,7 +91,12 @@ class RdfOntology2WikiBaseConverter:
         return self.wbs.create_wb_thing(item=item, labels=lbs, descriptions=dscs, claims={})
 
     def skip_subj(self, subj):
-        return str(subj) == BASE_URI # It is the owl:Ontology instance
+        # It is either of:
+        # * a blank-node (at the time of writing (24. august 2021), these are the `owl:unionOf`s from the `rdfs:range`s, which we ignore anyway
+        # * the `owl:Ontology` instance
+        #return (type(subj) is rdflib.term.BNode) or (str(subj) == BASE_URI)
+        skip = (type(subj) is rdflib.term.BNode) or (str(subj) == BASE_URI)
+        return skip
 
     def rdf2wb_id(self, rdf_ref, fail_if_missing=True):
         wb_ids = self.ont2wb.objects(rdf_ref, SCHEMA.identifier)
@@ -254,6 +260,8 @@ url
                     None) # https://www.wikidata.org/wiki/Property:P2699 -  aka URL
             self.create_subst_property(SPDX.licenseDeclared, 'PXXXXXXXX',
                     'licenseDeclared', 'string')
+            self.create_subst_property(EPO.classificationIPCInventive, 'P5778',
+                    'classificationIPCInventive', 'string')
             self.create_subst_property(SCHEMA.fileFormat, 'PXXXXXX', 'fileFormat',
                     'string')
 
