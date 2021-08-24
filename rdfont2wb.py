@@ -60,12 +60,6 @@ class RdfOntology2WikiBaseConverter:
         self.description_sep = '\n\n'
 
     def create_ont_wb_thing(self, subj) -> str:
-        '''
-        data = {
-                'aliases': {},
-                'datatype': 'string' # XXX unused later on!
-                }
-        '''
 
         lbs = {}
         for lb_prop in get_label_preds():
@@ -92,7 +86,6 @@ class RdfOntology2WikiBaseConverter:
                 print('\t%s' % typ)
             exit(1)
 
-        #return "XXX"
         return self.wbs.create_wb_thing(item=item, labels=lbs, descriptions=dscs, claims={})
 
     def skip_subj(self, subj):
@@ -145,7 +138,6 @@ class RdfOntology2WikiBaseConverter:
                 'id': obj_id,
                 'numeric-id': obj_id_num
                 }
-        #main_type = 'string' if isinstance(obj, rdflib.Literal) else 'wikibase-item'
         if value_type == 'string':
             main_data_type = value_type
         else:
