@@ -7,6 +7,7 @@ through its API (api.php).
 '''
 
 import os
+import validators
 import rdflib
 from rdflib.namespace import DC, DCTERMS, DOAP, FOAF, SKOS, OWL, RDF, RDFS, VOID, XMLNS, XSD
 import click
@@ -113,7 +114,10 @@ class RdfOntology2WikiBaseConverter:
             return
         value_type = None
         if isinstance(obj, rdflib.Literal):
-            value_type = 'string'
+            if validators.url(obj.n3()):
+                value_type = 'url'
+            else:
+                value_type = 'string'
         else:
             types = list(self.graph.objects(obj, RDF.type))
             if OWL.Class in types:
@@ -130,6 +134,8 @@ class RdfOntology2WikiBaseConverter:
                     value_type = 'property'
         if value_type == 'string':
             main_value = str(obj)
+        elif value_type == 'url':
+            main_value = str(obj)
         else:
             obj_id = self.rdf2wb_id(obj)
             obj_id_num = int(obj_id[1:])
@@ -138,11 +144,11 @@ class RdfOntology2WikiBaseConverter:
                 'id': obj_id,
                 'numeric-id': obj_id_num
                 }
-        if value_type == 'string':
+        if value_type in ['string', 'url']:
             main_data_type = value_type
         else:
             main_data_type = 'wikibase-%s' % value_type
-        main_type = 'string' if value_type == 'string' else 'wikibase-entityid'
+        main_type = value_type if value_type in ['string', 'url'] else 'wikibase-entityid'
         main_snak_type = 'value'
         '''
 commonsMedia
@@ -188,7 +194,7 @@ url
 
         item = False
 
-        property_type = 'string' if obj_type is None else 'wikibase-' + obj_type
+        property_type = obj_type if obj_type in ['string', 'url'] else 'wikibase-' + obj_type
 
         local_wb_id = self.wbs.create_wb_thing(item=item, labels=lbs, descriptions=dscs, claims={}, property_type=property_type)
 
@@ -217,9 +223,9 @@ url
             #self.create_subst_property(SCHEMA.domain, SCHEMA.identifier, '')) #
             #self.create_subst_property(SCHEMA.range, SCHEMA.identifier, '')) # -> datatype
             self.create_subst_property(SCHEMA.inLanguage, 'P305', 'inLanguage',
-                    None) # https://www.wikidata.org/wiki/Property:P305
+                    'string') # https://www.wikidata.org/wiki/Property:P305
             self.create_subst_property(SCHEMA.version, 'P348', 'version',
-                    None) # https://www.wikidata.org/wiki/Property:P348
+                    'string') # https://www.wikidata.org/wiki/Property:P348
             self.create_subst_property(SCHEMA.isBasedOn, 'P144', 'isBasedOn',
                     'property') # https://www.wikidata.org/wiki/Property:P144
             self.create_subst_property(SCHEMA.copyrightHolder,
@@ -227,29 +233,29 @@ url
             self.create_subst_property(SCHEMA.licenseDeclared,
                     'P2479', 'licenseDeclared', 'item') # https://www.wikidata.org/wiki/Property:P2479
             self.create_subst_property(SCHEMA.creativeWorkStatus,
-                    'P548', 'creativeWorkStatus', None) # https://www.wikidata.org/wiki/Property:P548 - aka version type
+                    'P548', 'creativeWorkStatus', 'string') # https://www.wikidata.org/wiki/Property:P548 - aka version type
             self.create_subst_property(SCHEMA.image, 'P4765', 'image',
-                    None) # https://www.wikidata.org/wiki/Property:P4765 - aka Commons compatible image available at URL
+                    'url') # https://www.wikidata.org/wiki/Property:P4765 - aka Commons compatible image available at URL
             self.create_subst_property(SCHEMA.hasPart, 'P527', 'hasPart',
                     'item') # https://www.wikidata.org/wiki/Property:P527 - has part
             #self.create_subst_property(SCHEMA.hasPart, 'P2670', '', True) # https://www.wikidata.org/wiki/Property:P2670 - has parts of the class
             self.create_subst_property(SCHEMA.codeRepository,
-                    'P1324', 'sourceCodeRepository', None) # https://www.wikidata.org/wiki/Property:P1324 - source code repository
+                    'P1324', 'sourceCodeRepository', 'url') # https://www.wikidata.org/wiki/Property:P1324 - source code repository
             self.create_subst_property(SCHEMA.value, 'P8203',
                     'supportedMetaData',
-                    None) # https://www.wikidata.org/wiki/Property:P8203 -  aka supported Metadata
+                    'string') # https://www.wikidata.org/wiki/Property:P8203 -  aka supported Metadata
             self.create_subst_property(OBO.BFO_0000016, 'P7535',
                     'scopeAndContent',
-                    None) # function -> https://www.wikidata.org/wiki/Property:P7535 - aka scope and content
+                    'string') # function -> https://www.wikidata.org/wiki/Property:P7535 - aka scope and content
             self.create_subst_property(SCHEMA.amount, 'P1114',
                     'quantity',
-                    None) # https://www.wikidata.org/wiki/Property:P1114 -  aka quantity
+                    'string') # https://www.wikidata.org/wiki/Property:P1114 -  aka quantity
             self.create_subst_item(SCHEMA.URL, 'QXXXXXXX', 'URL',
                     None) # https://www.wikidata.org/wiki/Property:P2699 -  aka URL
             self.create_subst_property(SPDX.licenseDeclared, 'PXXXXXXXX',
-                    'licenseDeclared', None)
+                    'licenseDeclared', 'string')
             self.create_subst_property(SCHEMA.fileFormat, 'PXXXXXX', 'fileFormat',
-                    None)
+                    'string')
 
 
         # create the items and properties
