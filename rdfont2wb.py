@@ -258,7 +258,7 @@ url
                     'string') # https://www.wikidata.org/wiki/Property:P1114 -  aka quantity
             self.create_subst_item(SCHEMA.URL, 'QXXXXXXX', 'URL',
                     None) # https://www.wikidata.org/wiki/Property:P2699 -  aka URL
-            self.create_subst_property(SPDX.licenseDeclared, 'PXXXXXXXX',
+            self.create_subst_property(SPDX.licenseDeclared, 'P2479',
                     'licenseDeclared', 'string')
             self.create_subst_property(EPO.classificationIPCInventive, 'P5778',
                     'classificationIPCInventive', 'string')
