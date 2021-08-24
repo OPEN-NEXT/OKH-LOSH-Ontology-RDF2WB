@@ -15,7 +15,7 @@ sudo pip install -r requirements.txt
 Reads our *osh-metadata.ttl* OKH meta-data ontology file (format: RDF/Turtle),
 and converts it to a quasi equivalent ontology on a WikiBase instance
 through the *api.php* web interface.
-It writes to our OHO WikiBase instance, and cna be used like this:
+It writes to our OHO WikiBase instance, and can be used like this:
 
 ```bash
 python3 rdfont2wb.py 'MyOhoUser' 'MyOhoPasswd'
