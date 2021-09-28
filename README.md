@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021 Robin Vobruba <hoijui.quaero@gmail.com>
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 # OKH - LOSH - RDF Ontology to WikiBase converter
 
 A [CLI](https://en.wikipedia.org/wiki/Command-line_interface)

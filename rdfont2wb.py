@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# SPDX-FileCopyrightText: 2021 Robin Vobruba <hoijui.quaero@gmail.com>
+#
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 '''
 Converts the OKH RDF Ontology into items and properties in a WikiBase instance.
 It reads input from an RDF(/Turtle) file,
