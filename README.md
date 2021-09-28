@@ -35,6 +35,14 @@ and a basic CLI interface.
 It creates WikiBase properties and objects on the server,
 and a lot of CLI output, but nothing else.
 
+This tool either does an initial import of the ontology,
+or just updates the ontology on the WikiBase server.
+You just run it, and it does whatever is needed.
+
+**NOTE:** \
+It does *not* remove properties or items created by a previous run,
+which are no longer required.
+
 ## Design Notes
 
 This tool was specifically made for the OKH ontology,
