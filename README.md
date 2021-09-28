@@ -5,11 +5,11 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 -->
 
 [![License: CC-BY-SA 4.0](
-	https://img.shields.io/badge/License-CC_BY_SA_4.0-blue.svg)](
-	https://creativecommons.org/licenses/by-sa/4.0/)
+    https://img.shields.io/badge/License-CC_BY_SA_4.0-blue.svg)](
+    https://creativecommons.org/licenses/by-sa/4.0/)
 [![REUSE status](
-	https://api.reuse.software/badge/github.com/OPEN-NEXT/OKH-LOSH-Ontology-RDF2WB)](
-	https://api.reuse.software/info/github.com/OPEN-NEXT/OKH-LOSH-Ontology-RDF2WB)
+    https://api.reuse.software/badge/github.com/OPEN-NEXT/OKH-LOSH-Ontology-RDF2WB)](
+    https://api.reuse.software/info/github.com/OPEN-NEXT/OKH-LOSH-Ontology-RDF2WB)
 
 # OKH - LOSH - RDF Ontology to WikiBase converter
 
