@@ -12,11 +12,12 @@ through its API (api.php).
 '''
 
 import os
+import pprint
 import validators
 import rdflib
 from rdflib.namespace import DC, DCTERMS, DOAP, FOAF, SKOS, OWL, RDF, RDFS, VOID, XMLNS, XSD
 import click
-from wikibase import WBSession, DummyWBSession, API_URL_OHO, enable_debug
+from wikibase import WBSession, DummyWBSession, API_URL_OHO, enable_debug, is_debug
 
 OBO = rdflib.Namespace('http://purl.obolibrary.org/obo/')
 SCHEMA = rdflib.Namespace('http://schema.org/')
@@ -65,9 +66,9 @@ class RdfOntology2WikiBaseConverter:
         self.default_language = 'en'
         self.label_sep = '\n\n'
         self.description_sep = '\n\n'
+        self.pp = pprint.PrettyPrinter(indent=4)
 
     def create_ont_wb_thing(self, subj) -> str:
-
         lbs = {}
         for lb_prop in get_label_preds():
             for lb in self.graph.objects(subj, lb_prop):
@@ -190,8 +191,12 @@ url
             'type': 'statement',
             'rank': 'normal',
             }]
-        print('- Adding on %s claim %s (%s) ...'
-                % (wb_id, str(claims), str(pred)))
+        print('- Adding claim %s on %s' % (str(pred), wb_id), end = '')
+        if is_debug():
+            print('')
+            print('    ', end = '')
+            self.pp.pprint(claims)
+        print(' ...')
         self.wbs.add_wb_thing_claims(wb_id, claims)
 
     def create_subst_property(self, rdf_pred_node, original_wd_id, label, obj_type):
@@ -270,7 +275,6 @@ url
             self.create_subst_property(SCHEMA.fileFormat, 'PXXXXXX', 'fileFormat',
                     'string')
 
-
         # create the items and properties
         for subj in self.graph.subjects():
             if self.skip_subj(subj):
@@ -296,11 +300,15 @@ url
                 wb_id = str(wb_id)
             for _, pred, obj in self.graph.triples((subj, None, None)):
                 if pred == RDFS.range:
-                    print('XXX range')
+                    if is_debug():
+                        print('XXX range')
                 elif pred == RDFS.domain:
-                    print('XXX domain')
+                    if is_debug():
+                        print('XXX domain')
                 else:
                     self.create_claim(wb_id, subj, pred, obj)
+
+        print('done.')
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('user', envvar='USER')

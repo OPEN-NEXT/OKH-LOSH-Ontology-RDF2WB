@@ -34,6 +34,8 @@ except ImportError:
 API_URL_MEDIA_WIKI = 'https://www.wikidata.org/w/api.php'
 API_URL_OHO = 'http://losh.ose-germany.de/api.php'
 
+debug_enabled = False
+
 def enable_debug():
     '''
     Enabling debugging at http.client level (requests->urllib3->http.client)
@@ -41,6 +43,7 @@ def enable_debug():
     and RESPONSE with HEADERS but without DATA.
     the only thing missing will be the response.body which is not logged.
     '''
+    global debug_enabled
     HTTPConnection.debuglevel = 1
 
     # you need to initialize logging,
@@ -50,6 +53,14 @@ def enable_debug():
     requests_log = logging.getLogger("urllib3")
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
+    debug_enabled = True
+
+def is_debug():
+    '''
+    Returns True if debugging is enabled, False otherwise.
+    '''
+    global debug_enabled
+    return debug_enabled
 
 class WBSession:
     '''
