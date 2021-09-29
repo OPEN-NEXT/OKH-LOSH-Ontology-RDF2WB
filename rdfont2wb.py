@@ -315,7 +315,7 @@ url
 @click.argument('passwd', envvar='PASSWD')
 @click.option('-d', '--dry', default=False, is_flag=True)
 @click.option('-d', '--debug', default=False, is_flag=True)
-@click.version_option("1.0.0")
+@click.version_option("1.0.1")
 def cli(user, passwd, dry, debug):
     # Run as a CLI script
     if debug:
