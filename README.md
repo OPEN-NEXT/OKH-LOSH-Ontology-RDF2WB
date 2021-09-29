@@ -93,7 +93,7 @@ or to update it - just run it! :-)
 
 The command below reads our [OKH-LOSH.ttl](
 https://github.com/OPEN-NEXT/OKH-LOSH/blob/master/OKH-LOSH.ttl)
-OKH meta-data ontology file (format: RDF/Turtle),
+OKH metadata ontology file (format: RDF/Turtle),
 and converts it to a quasi equivalent ontology on a WikiBase instance
 through the [api.php](https://www.mediawiki.org/w/api.php) web interface.
 It writes to our OHO WikiBase instance.
