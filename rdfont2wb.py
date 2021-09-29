@@ -16,7 +16,7 @@ import validators
 import rdflib
 from rdflib.namespace import DC, DCTERMS, DOAP, FOAF, SKOS, OWL, RDF, RDFS, VOID, XMLNS, XSD
 import click
-from wikibase import WBSession, API_URL_OHO, enable_debug
+from wikibase import WBSession, DummyWBSession, API_URL_OHO, enable_debug
 
 OBO = rdflib.Namespace('http://purl.obolibrary.org/obo/')
 SCHEMA = rdflib.Namespace('http://schema.org/')
@@ -305,13 +305,19 @@ url
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('user', envvar='USER')
 @click.argument('passwd', envvar='PASSWD')
+@click.option('-d', '--dry', default=False, is_flag=True)
+@click.option('-d', '--debug', default=False, is_flag=True)
 @click.version_option("1.0.0")
-def cli(user, passwd):
+def cli(user, passwd, dry, debug):
     # Run as a CLI script
-    #enable_debug()
-    wbs = WBSession(API_URL_OHO)
-    #wbs.bot_login(bot_user, bot_passwd)
-    wbs.login(user, passwd)
+    if debug:
+        enable_debug()
+
+    if dry:
+        wbs = DummyWBSession(API_URL_OHO)
+    else:
+        wbs = WBSession(API_URL_OHO)
+        wbs.login(user, passwd)
 
     converter = RdfOntology2WikiBaseConverter(RDF_FILE, wbs, RDF_TO_WB_LINK_FILE)
     converter.convert()

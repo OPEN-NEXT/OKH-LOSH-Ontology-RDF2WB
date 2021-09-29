@@ -24,6 +24,7 @@ import json
 import re
 import logging
 import requests
+import random
 
 try: # for Python 3
     from http.client import HTTPConnection
@@ -271,6 +272,78 @@ class WBSession:
                             'value': desc
                         }
         return self.create_wb_thing_raw(item, data)
+
+class DummyWBSession(WBSession):
+    '''
+    Represents a dummy session of HTTP communication with a Wiki-Base instance,
+    meaning, it does not communicate with a server,
+    but acts as if it did, as muhc as possible.
+    '''
+    def __init__(self, api_url):
+        random.seed()
+        self.api_url = api_url
+
+    def call_api(self, params=None, data=None, method='POST'):
+        '''
+        Pseudo calls the MediaWiki API (api.php) with the given parameters.
+        '''
+        req = ""
+        return req
+
+    def close(self):
+        '''
+        Pseudo closes this session.
+        After calling this, further use of other methods will fail.
+        '''
+        pass
+
+    def bot_login(self, bot_user, bot_passwd):
+        '''
+        Pseudo function for logging in as a bot.
+        '''
+        pass
+
+    def fetch_login_token(self) -> str:
+        ''' Pseudo fetches login token '''
+        return ""
+
+    def login(self, username, password):
+        """
+        Pseudo send a post request along with login token, user information
+        and return URL to the API to log in on a wiki
+
+        https://www.mediawiki.org/wiki/API:Login#Method_2._clientlogin
+        """
+        pass
+
+    def request_token(self) -> str:
+        '''
+        Pseudo requests a standard token, required to do almost any interaction
+        with the API.
+        '''
+        return ""
+
+    def clear_thing(self, part_id):
+        '''
+        Pseudo clears everything from an Item or Property.
+        '''
+        print('- Dry-Clear Item/Property ...')
+
+    def add_wb_thing_claims(self, wb_id, claims={}):
+        '''
+        Pseudo adds claims to an item or property.
+        '''
+        return ""
+
+    def create_wb_thing_raw(self, item=True, data={}, wb_id=None) -> str:
+        '''
+        Pseudo creates a new WikiBase item.
+        '''
+        print('- Dry-Create Item/Property ...')
+        return ("Q" if item else "P") + random.randint(100, 1000)
+
+    # def create_wb_thing(self, item=True, labels={}, descriptions={}, claims={}, property_type='string') -> str:
+    #     NOTE Us eparents implementation
 
 if __name__ == "__main__":
     # Run as a CLI script
