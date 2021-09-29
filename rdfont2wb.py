@@ -305,7 +305,7 @@ url
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('user', envvar='USER')
 @click.argument('passwd', envvar='PASSWD')
-@click.version_option("0.1.0")
+@click.version_option("1.0.0")
 def cli(user, passwd):
     # Run as a CLI script
     #enable_debug()
