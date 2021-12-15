@@ -175,7 +175,7 @@ class WBSession:
         '''
         Clears everything from an Item or Property.
         '''
-        print('- Clear Item/Property ...')
+        print('- Clear Item/Property with ID %s ...' % part_id)
         res = self.call_api(
                 method='POST',
                 params = {
@@ -189,8 +189,8 @@ class WBSession:
             )
         ans = res.json()
         if 'error' in ans:
-            raise RuntimeError('Failed creating item, reason: %s - %s'
-                    % (ans['error']['code'], ans['error']['info']))
+            raise RuntimeError('Failed clearing Item/Property with ID %s, reason: %s - %s'
+                    % (part_id, ans['error']['code'], ans['error']['info']))
 
     def add_wb_thing_claims(self, wb_id, claims={}):
         '''
@@ -201,9 +201,10 @@ class WBSession:
 
     def create_wb_thing_raw(self, item=True, data={}, wb_id=None) -> str:
         '''
-        Creates a new WikiBase item.
+        Creates a new WikiBase item or property.
         '''
-        print('- Create Item/Property ...')
+        type_str = 'Item' if item else 'Property'
+        print('- Creating %s ...' % type_str)
         print(json.dumps(data))
         params = {
             'action': 'wbeditentity',
@@ -238,8 +239,9 @@ class WBSession:
                 wb_id = match.group(1)
                 self.clear_thing(wb_id)
                 return self.create_wb_thing_raw(item, data, wb_id)
-            raise RuntimeError('Failed creating item, reason: %s - %s'
-                    % (ans['error']['code'], ans['error']['info']))
+            raise RuntimeError('Failed creating %s, reason: %s - %s -\n%s'
+                    % (type_str, ans['error']['code'], ans['error']['info'],
+                       json.dumps(ans)))
 
         print(ans)
         return ans['entity']['id']
@@ -350,7 +352,7 @@ class DummyWBSession(WBSession):
         '''
         Pseudo creates a new WikiBase item.
         '''
-        print('- Dry-Create Item/Property ...')
+        print('- Dry-Creating %s ...' % ('Item' if item else 'Property'))
         return ("Q" if item else "P") + random.randint(100, 1000)
 
     # def create_wb_thing(self, item=True, labels={}, descriptions={}, claims={}, property_type='string') -> str:
