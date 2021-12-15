@@ -232,8 +232,8 @@ class WBSession:
                 # Item/Property already exists.
                 # -> Delete it and create it from anew.
                 #    api.php?action=wbeditentity&clear=true&id=Q42&data={} [open in sandbox]
-                item_pat = re.compile('\[\[Item:(Q[0-9]+)')
-                prop_pat = re.compile('\[\[Property:(P[0-9]+)')
+                item_pat = re.compile(r'\[\[Item:(Q[0-9]+)')
+                prop_pat = re.compile(r'\[\[Property:(P[0-9]+)')
                 pat = item_pat if item else prop_pat
                 match = pat.search(ans['error']['info'])
                 wb_id = match.group(1)
