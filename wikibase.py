@@ -156,8 +156,8 @@ class WBSession:
         if login_success:
             print('Login success! Welcome, ' + data['clientlogin']['username'] + '!')
         else:
-            raise RuntimeError('Failed to log into WikiBase at "%s", error: %d' %
-                    (self.api_url, data['clientlogin']['messagecode']))
+            raise RuntimeError('Failed to log into WikiBase at "%s", error: %s' %
+                    (self.api_url, str(data['clientlogin']['messagecode'])))
 
     def request_token(self) -> str:
         '''
