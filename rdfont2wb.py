@@ -53,7 +53,25 @@ def get_non_claim_preds():
             OWL.cardinality, OWL.maxCardinality, OWL.minCardinality]
             #RDFS.subPropertyOf, RDFS.subClassOf]
 
-WD_PRED_IDS = ['P279', 'P1647', 'P305', 'P348', 'P144', 'P3931', 'P2479', 'P548', 'P4765', 'P527', 'P1324', 'P8203', 'P7535', 'P1114', 'P2699', 'P2479', 'P5778']
+WD_PRED_IDS = [
+    'P279',
+    'P1647',
+    'P305',
+    'P348',
+    'P144',
+    'P3931',
+    'P2479',
+    'P548',
+    'P4765',
+    'P527',
+    'P1324',
+    'P8203',
+    'P7535',
+    'P1114',
+    'P2699',
+    'P2479',
+    'P5778'
+]
 
 class RdfOntology2WikiBaseConverter:
 
