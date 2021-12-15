@@ -237,6 +237,7 @@ class WBSession:
                 pat = item_pat if item else prop_pat
                 match = pat.search(ans['error']['info'])
                 wb_id = match.group(1)
+                return wb_id # TODO FIXME HACK We should instead do the next two things, but... @#$%@$#
                 self.clear_thing(wb_id)
                 return self.create_wb_thing_raw(item, data, wb_id)
             raise RuntimeError('Failed creating %s, reason: %s - %s -\n%s'
