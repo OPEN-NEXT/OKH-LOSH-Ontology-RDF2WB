@@ -23,6 +23,7 @@ OBO = rdflib.Namespace('http://purl.obolibrary.org/obo/')
 SCHEMA = rdflib.Namespace('http://schema.org/')
 SPDX = rdflib.Namespace('http://spdx.org/rdf/terms#')
 EPO = rdflib.Namespace('http://data.epo.org/linked-data/def/patent/')
+NPG = rdflib.Namespace('http://ns.nature.com/terms/')
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -292,6 +293,12 @@ url
                     'classificationIPCInventive', 'string')
             self.create_subst_property(SCHEMA.fileFormat, 'PXXXXXX', 'fileFormat',
                     'string')
+            self.create_subst_item(NPG.Publication, 'Q591041', 'Publication',
+                                   None) # https://www.wikidata.org/wiki/Q591041 - aka: scientific publication
+            self.create_subst_property(NPG.hasPublication, 'PXXXXXX',
+                                       'hasPublication', 'item')
+            self.create_subst_property(NPG.doi, 'PXXXXXX',
+                                       'doi', 'item')
 
         # create the items and properties
         for subj in self.graph.subjects():
